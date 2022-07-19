@@ -9,14 +9,15 @@ import java.sql.SQLException;
 public class Util {
 
     public static Connection connection;
-    private static SessionFactory sessionFactory;
 
-    public static Connection getConnection() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?&serverTimeZone=Europe/Moscow&useSSL=false&allowPublicKeyRetrieval=true","root","admin");
-        connection.setAutoCommit(false);
-        return connection;
-    }
+    public static Connection getConnection() {
 
-    public Util() throws SQLException {
+        String conn = "jdbc:mysql://localhost:3306/test?&serverTimeZone=Europe/Moscow&useSSL=false&allowPublicKeyRetrieval=true";
+        try (Connection connection = DriverManager.getConnection( conn,"root","admin"))
+        {
+           return connection;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
